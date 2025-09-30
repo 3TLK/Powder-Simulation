@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://dlig73edae0qp"]
+[gd_scene load_steps=15 format=4 uid="uid://dlig73edae0qp"]
 
 [ext_resource type="Script" uid="uid://cojw14vxi5st0" path="res://Scenes/PowderSim.gd" id="1_tr2i4"]
 [ext_resource type="Texture2D" uid="uid://dqfjbvpoymcu" path="res://Sprites/MetalParticle.png" id="2_nhkr4"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://1b7n2cmgnhmd" path="res://Sprites/WaterParticle.png" id="4_7rqgy"]
 [ext_resource type="Texture2D" uid="uid://dmusghx5fnxvg" path="res://Sprites/DirtParticle.png" id="5_y4jh7"]
 [ext_resource type="Texture2D" uid="uid://bqdn350750nea" path="res://Sprites/StoneParticle.png" id="6_q68mp"]
+[ext_resource type="Texture2D" uid="uid://bxx86bsn1ritr" path="res://Sprites/GrassParticle.png" id="7_q68mp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nhkr4"]
 resource_name = "Metal"
@@ -37,6 +38,12 @@ texture = ExtResource("6_q68mp")
 texture_region_size = Vector2i(2, 2)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_q68mp"]
+resource_name = "Grass"
+texture = ExtResource("7_q68mp")
+texture_region_size = Vector2i(2, 2)
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_qxria"]
 tile_size = Vector2i(2, 2)
 sources/0 = SubResource("TileSetAtlasSource_nhkr4")
@@ -44,6 +51,7 @@ sources/1 = SubResource("TileSetAtlasSource_7rqgy")
 sources/2 = SubResource("TileSetAtlasSource_qxria")
 sources/3 = SubResource("TileSetAtlasSource_f140w")
 sources/4 = SubResource("TileSetAtlasSource_0iob3")
+sources/5 = SubResource("TileSetAtlasSource_q68mp")
 
 [node name="Main Scene" type="Node2D" node_paths=PackedStringArray("tilemap")]
 script = ExtResource("1_tr2i4")
@@ -57,12 +65,15 @@ tile_set = SubResource("TileSet_qxria")
 wait_time = 0.01
 autostart = true
 
+[node name="1sUpdate" type="Timer" parent="."]
+autostart = true
+
 [node name="OptionButton" type="OptionButton" parent="."]
 offset_right = 32.0
 offset_bottom = 20.0
 selected = 0
 allow_reselect = true
-item_count = 6
+item_count = 7
 popup/item_0/text = "Erase"
 popup/item_0/id = 0
 popup/item_1/text = "Metal"
@@ -80,6 +91,10 @@ popup/item_4/id = 4
 popup/item_5/text = "Stone"
 popup/item_5/icon = ExtResource("6_q68mp")
 popup/item_5/id = 5
+popup/item_6/text = "Grass"
+popup/item_6/icon = ExtResource("7_q68mp")
+popup/item_6/id = 6
 
 [connection signal="timeout" from="TickSpeed" to="." method="_Update"]
+[connection signal="timeout" from="1sUpdate" to="." method="_1sUpdate"]
 [connection signal="item_selected" from="OptionButton" to="." method="_materialSelected"]

@@ -10,6 +10,7 @@ const Sand : int = 1
 const Water : int = 2
 const Dirt : int = 3
 const Stone : int = 4
+const Grass : int = 5
 
 var SelectedMaterial : int = Erase
 
@@ -31,6 +32,12 @@ func _process(delta : float) -> void:
 	if Input.is_action_pressed("LMB"):
 		addCell(get_global_mouse_position()/cell_h, SelectedMaterial)
 
+func _1sUpdate() -> void:
+	for tile in tilemap.get_used_cells_by_id(Grass, Vector2i(0, 0)):
+		var side : int = randside[randi() % randside.size()]
+		if tilemap.get_cell_source_id(Vector2i(tile.x, tile.y +1)) != 3 && tilemap.get_cell_source_id(Vector2i(tile.x, tile.y +1)) != -1:
+			if side == 0:
+				removeCell(Vector2i(tile.x, tile.y))
 
 func _Update() -> void:
 	for tile in tilemap.get_used_cells_by_id(Stone, Vector2i(0, 0)):
@@ -48,6 +55,11 @@ func _Update() -> void:
 		if neighbors == 4:
 			pass
 		powderMovement(Vector2i(tile.x, tile.y), Dirt)
+	for tile in tilemap.get_used_cells_by_id(Grass, Vector2i(0, 0)):
+		var neighbors : int = tilemap.get_surrounding_cells(Vector2i(tile.x, tile.y)).size()
+		if neighbors == 4:
+			pass
+		powderMovement(Vector2i(tile.x, tile.y), Grass)
 	for tile in tilemap.get_used_cells_by_id(Water, Vector2i(0, 0)):
 		var neighbors :int = tilemap.get_surrounding_cells(Vector2i(tile.x, tile.y)).size()
 		if neighbors == 4:
